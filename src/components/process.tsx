@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { FileText, Palette, Code2, Rocket } from "lucide-react";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const steps = [
   {
@@ -27,16 +27,12 @@ const steps = [
 ];
 
 export default function Process() {
+  const ref = useScrollReveal();
+
   return (
-    <section id="process" className="py-24 px-6">
+    <section id="process" className="py-24 px-6" ref={ref}>
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="scroll-fade text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
               Как мы работаем
@@ -45,7 +41,7 @@ export default function Process() {
           <p className="text-zinc-400 max-w-md mx-auto">
             Простой и прозрачный процесс от идеи до запуска
           </p>
-        </motion.div>
+        </div>
 
         <div className="relative">
           {/* Линия таймлайна (десктоп) */}
@@ -53,17 +49,12 @@ export default function Process() {
 
           <div className="grid md:grid-cols-4 gap-8">
             {steps.map((step, i) => (
-              <motion.div
+              <div
                 key={step.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.15 }}
-                className="relative text-center"
+                className={`scroll-fade delay-${(i + 1) * 100} relative text-center`}
               >
-                {/* Номер шага + иконка */}
                 <div className="relative inline-flex flex-col items-center mb-6">
-                  <div className="w-24 h-24 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center mb-3 group hover:border-violet-500/50 transition-colors">
+                  <div className="w-24 h-24 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center mb-3 hover:border-violet-500/50 transition-colors">
                     <step.icon size={32} className="text-violet-400" />
                   </div>
                   <span className="text-xs text-zinc-500 font-mono">0{i + 1}</span>
@@ -71,7 +62,7 @@ export default function Process() {
 
                 <h3 className="text-lg font-bold text-white mb-2">{step.title}</h3>
                 <p className="text-sm text-zinc-400">{step.description}</p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

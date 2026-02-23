@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { motion } from "framer-motion";
 import { projects, type Project } from "@/data/projects";
 import { Badge } from "@/components/ui/badge";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 function ProjectCard({ project }: { project: Project }) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -27,7 +27,7 @@ function ProjectCard({ project }: { project: Project }) {
   };
 
   return (
-    <motion.div
+    <div
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -35,9 +35,6 @@ function ProjectCard({ project }: { project: Project }) {
         transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
         transition: "transform 0.1s ease-out",
       }}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
       className="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden hover:border-white/20 transition-colors"
     >
       {/* Превью */}
@@ -60,35 +57,30 @@ function ProjectCard({ project }: { project: Project }) {
           ))}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
 export default function Portfolio() {
   const [activeTab, setActiveTab] = useState<"sites" | "automations">("sites");
+  const ref = useScrollReveal();
 
   const filtered = projects.filter((p) => p.category === activeTab);
 
   return (
-    <section id="portfolio" className="py-24 px-6">
+    <section id="portfolio" className="py-24 px-6" ref={ref}>
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
+        <div className="scroll-fade text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
               Портфолио
             </span>
           </h2>
           <p className="text-zinc-400 max-w-md mx-auto">Проекты, которыми мы гордимся</p>
-        </motion.div>
+        </div>
 
         {/* Табы */}
-        <div className="flex justify-center gap-2 mb-12">
+        <div className="scroll-fade delay-100 flex justify-center gap-2 mb-12">
           {[
             { key: "sites" as const, label: "Сайты" },
             { key: "automations" as const, label: "Автоматизации" },
@@ -107,7 +99,7 @@ export default function Portfolio() {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="scroll-fade delay-200 grid md:grid-cols-3 gap-6">
           {filtered.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

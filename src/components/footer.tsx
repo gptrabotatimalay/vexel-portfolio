@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Send, Mail, Github } from "lucide-react";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const contacts = [
   { icon: Send, label: "Telegram", href: "https://t.me/vexel_studio" },
@@ -10,16 +10,12 @@ const contacts = [
 ];
 
 export default function Footer() {
+  const ref = useScrollReveal();
+
   return (
-    <footer id="footer" className="py-16 px-6 border-t border-white/5">
+    <footer id="footer" className="py-16 px-6 border-t border-white/5" ref={ref}>
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center"
-        >
+        <div className="scroll-fade text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
             Давайте работать вместе
           </h2>
@@ -43,7 +39,7 @@ export default function Footer() {
           <p className="text-xs text-zinc-600">
             &copy; {new Date().getFullYear()} VEXEL. Все права защищены.
           </p>
-        </motion.div>
+        </div>
       </div>
     </footer>
   );

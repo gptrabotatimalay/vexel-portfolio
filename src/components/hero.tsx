@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
 const phrases = [
   "Создаём сайты за 2 дня",
@@ -44,51 +43,30 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 text-center px-6 max-w-4xl">
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-5xl md:text-7xl font-bold mb-6"
-        >
+        <h1 className="text-5xl md:text-7xl font-bold mb-6">
           <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-blue-400 bg-clip-text text-transparent animate-gradient-text">
             VEXEL
           </span>
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg md:text-xl text-zinc-400 mb-8 max-w-2xl mx-auto"
-        >
+        <p className="text-lg md:text-xl text-zinc-400 mb-8 max-w-2xl mx-auto">
           Делаем сайты и автоматизации, которые приносят результат
-        </motion.p>
+        </p>
 
         {/* Typing эффект */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="h-8 mb-10"
-        >
+        <div className="h-8 mb-10">
           <span className="text-lg text-violet-300 font-mono">
             {displayed}
             <span className="animate-pulse">|</span>
           </span>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+        <a
+          href="#services"
+          className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-violet-600 to-blue-600 text-white font-medium text-lg glow-button transition-transform hover:scale-105"
         >
-          <a
-            href="#services"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-violet-600 to-blue-600 text-white font-medium text-lg glow-button transition-transform hover:scale-105"
-          >
-            Смотреть услуги
-          </a>
-        </motion.div>
+          Смотреть услуги
+        </a>
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const stats = [
   { value: 50, suffix: "+", label: "Проектов" },
@@ -12,30 +12,37 @@ const stats = [
 function AnimatedCounter({ target, suffix }: { target: number; suffix: string }) {
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true });
+  const started = useRef(false);
 
   useEffect(() => {
-    if (!isInView) return;
+    const el = ref.current;
+    if (!el) return;
 
-    let start = 0;
-    const duration = 2000;
-    const startTime = Date.now();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !started.current) {
+          started.current = true;
+          const duration = 2000;
+          const startTime = Date.now();
 
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // easeOutCubic
-      const eased = 1 - Math.pow(1 - progress, 3);
-      start = Math.round(eased * target);
-      setCount(start);
+          const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.round(eased * target));
+            if (progress < 1) requestAnimationFrame(animate);
+          };
 
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
+          requestAnimationFrame(animate);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.5 }
+    );
 
-    requestAnimationFrame(animate);
-  }, [isInView, target]);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target]);
 
   return (
     <span ref={ref}>
@@ -45,16 +52,12 @@ function AnimatedCounter({ target, suffix }: { target: number; suffix: string })
 }
 
 export default function Stats() {
+  const ref = useScrollReveal();
+
   return (
-    <section className="py-24 px-6">
+    <section className="py-24 px-6" ref={ref}>
       <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-12"
-        >
+        <div className="scroll-fade rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-12">
           <div className="grid grid-cols-3 gap-8">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
@@ -65,7 +68,7 @@ export default function Stats() {
               </div>
             ))}
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

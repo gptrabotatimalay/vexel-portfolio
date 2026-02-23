@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Globe, Zap } from "lucide-react";
+import { useScrollReveal } from "@/lib/useScrollReveal";
 
 const services = [
   {
@@ -21,16 +21,12 @@ const services = [
 ];
 
 export default function Services() {
+  const ref = useScrollReveal();
+
   return (
-    <section id="services" className="py-24 px-6">
+    <section id="services" className="py-24 px-6" ref={ref}>
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
+        <div className="scroll-fade text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             <span className="bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
               Наши услуги
@@ -39,17 +35,13 @@ export default function Services() {
           <p className="text-zinc-400 max-w-md mx-auto">
             Два направления — одна цель: рост вашего бизнеса
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           {services.map((service, i) => (
-            <motion.div
+            <div
               key={service.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.2 }}
-              className="group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-8 hover:border-white/20 transition-all duration-300"
+              className={`scroll-fade delay-${(i + 1) * 100} group relative rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-8 hover:border-white/20 transition-all duration-300`}
             >
               {/* Градиентная подсветка сверху */}
               <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${service.gradient} opacity-50`} />
@@ -71,7 +63,7 @@ export default function Services() {
                   </span>
                 ))}
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
